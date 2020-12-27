@@ -115,6 +115,8 @@ getumark(c)
 		return (&marks[c-'A'+26]);
 	if (c == '#')
 		return (&marks[MOUSEMARK]);
+	if (c == '\'')
+		return (&marks[LASTMARK]);
 	error("Invalid mark letter", NULL_PARG);
 	return (NULL);
 }
@@ -252,6 +254,7 @@ lastmark(VOID_PARAM)
 	if (scrpos.pos == NULL_POSITION)
 		return;
 	cmark(&marks[LASTMARK], curr_ifile, scrpos.pos, scrpos.ln);
+	marks_modified = 1;
 }
 
 /*
@@ -395,7 +398,7 @@ save_marks(fout, hdr)
 		return;
 
 	fprintf(fout, "%s\n", hdr);
-	for (i = 0;  i < NUMARKS;  i++)
+	for (i = 0;  i < NMARKS;  i++)
 	{
 		char *filename;
 		struct mark *m = &marks[i];
